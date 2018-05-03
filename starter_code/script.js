@@ -1,9 +1,41 @@
+// in style.css we added background image in the #game-board
+// in index.html we added canvas tag
+// in index.html we added div with the score
+// the steps: 
+        // 1. get the canvas, 
+        // 2. create Game constructor function,
+        // 3. in startGame function create new game using "new" key word (that's currentGame) 
+        // 4. create Car constructor function,
+        // 5. create drawCar() function on Car prototype
+        // 6. in startGame function create new car using "new" key word (that's currentCar)
+        // 7. tie the currentCar to the currentGame 
+        // 8. in startGame function let's create car using drawCar function
+        // 9. let's give some movement to the car (move() function and using keyCode thingy)
+        // 10. create Obstacle constructor function,
+        // 11. create createObstacle() function
+        // 12. create update function on Game prototype and use something to animate your canvas
+        //     ( in the 1st example we used setInterval() and in this example we used requestAnimationFrame )
+        //     SURPRISE ME WITH THE 3RD WAY :) IN YOUR GAME
+        // 13. create left(), right(), top() and bottom() functions on Obstacle prototype to pick up the position and dimension of the obstacles
+        // 14. create checkCollision() to see where is the obstacle comparing to the currentCar (or currentGame.car)
+        // 15. set the score
+        // 16. what happens when the car hits the obstacle
+        // 17. for your games: do the restart button and nice ending of the game with the score and question: Wanna play again? :)
+
+        //  GOOD LUCK DEVELOPERS!
+
+
+
 window.onload = function() {
-  // the road is is not visible before the game starts 
+  // make road not visible before the game starts 
   document.getElementById("game-board").style.display = 'none';
+  // make score not visible before the game starts 
   document.getElementById("scoreDiv").style.display = "none";
+
+  // global variables
   var currentGame;
   var currentCar;
+
   var myCanvas = document.getElementById("theCanvas");
   var ctx = myCanvas.getContext("2d");
   var board = {
@@ -11,11 +43,10 @@ window.onload = function() {
     frames: 0
   }
 
-
   // Game constructor function
   var Game = function(){
-    this.car = {};
-    this.obstacles = [];
+    this.car = {}; // car => OBJECT 
+    this.obstacles = []; // obstacles => ARRAY
   }
 
   // Car constructor function
@@ -40,6 +71,7 @@ window.onload = function() {
   }
 
   Car.prototype.move = function(number){
+    // this.x, this.y, this.width, this.height ====> refers to the CAR
     ctx.clearRect(this.x, this.y, this.width, this.height)
     switch(number){
       case 37:
@@ -104,13 +136,13 @@ Obstacle.prototype.checkCollision = function(obstacle){
     console.log("works");
     // make the road visible now
     document.getElementById("game-board").style.display = 'block';
+    // make the score visible now
     document.getElementById("scoreDiv").style.display = "block";
     // document.getElementById("score").innerHTML = board.score;
     currentGame = new Game();
     currentCar = new Car();
     currentGame.car = currentCar;
     currentGame.car.drawCar();
-    // interval();
     currentGame.update()
   }
 
@@ -120,11 +152,6 @@ Obstacle.prototype.checkCollision = function(obstacle){
     // console.log("whereToGo: ", whereToGo);
     currentGame.car.move(whereToGo);
   }
-
-  // function update(){
-  //   console.log("hey: ", currentGame.car)
-  //   // console.log("obs array: ", currentGame.obstacles)
-  // }
 
   Game.prototype.update = function(){
     // console.log("blah: ", currentGame);
@@ -143,14 +170,12 @@ Obstacle.prototype.checkCollision = function(obstacle){
       currentGame.obstacles[i].createObstacle();
       if(currentGame.obstacles[i].checkCollision(currentGame.obstacles[i]) === true){
         console.log("collision detected");
-        // setTimeout(function(){
           alert("Crashed!");
-        // }, 30)
         board.score = 0;
         document.getElementById("score").innerHTML = board.score;
         board.frames = 0;
         currentGame.obstacles = [];
-        startGame();
+        // startGame();
       }
     
 
@@ -163,7 +188,6 @@ Obstacle.prototype.checkCollision = function(obstacle){
       }
 
     }
-    // console.log("blahhhhhh: ", currentGame);
     // var fps = 25
     function animate() {
       setTimeout(function() {
@@ -172,8 +196,6 @@ Obstacle.prototype.checkCollision = function(obstacle){
       // 1000 / fps);
     }
     animate();
-    
-
   }
 
 };
